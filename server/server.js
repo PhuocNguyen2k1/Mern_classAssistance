@@ -2,8 +2,8 @@ require('dotenv').config()
 
 const express = require('express')
 // const bodyParser = require('body-parser')
-const userModel = require('./Models/userModel')
 const userRoute = require('./Routes/userRoute')
+const classRoute = require('./Routes/classRoute')
 const { default: mongoose } = require('mongoose')
 
 const app = express()
@@ -16,7 +16,7 @@ app.use((req, res, next)=>{
 })
                 //Route//
 app.use('/api/user',userRoute)
-
+app.use('/api/class',classRoute)
             //connect to DB//
 mongoose.set('strictQuery', true);
 mongoose.connect(process.env.MONGO_URI)
