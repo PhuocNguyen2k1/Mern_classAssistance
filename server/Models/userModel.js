@@ -5,14 +5,12 @@ const validator = require('validator');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    // firstname:{
-    //     value: String,
-    //     require: true,
-    // },
-    // lastname: {
-    //     value: String,
-    //     require: true,
-    // },
+    firstname: {
+        type:String
+    },
+    lastname: {
+        type:String
+    },
     email: {
         type: String,
         required: true,
@@ -22,19 +20,17 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
-    // address: {
-    //     value: String,
-    //     require: true,
-    // },
-    // position: {
-    //     value: String,
-    //     require: true,
-    // },
+    address:{
+        type:String
+    },
+    role:{
+        type:String
+    },
 });
 
-userSchema.statics.signup = async function(email, password){
+userSchema.statics.signup = async function(firstname, lastname, email, password, address, role){
     //validation
-    if(!email || !password){
+    if(!email || !password || !firstname || !lastname ){
         throw Error('All fields must be filled')
     }
     if(!validator.isEmail(email)){
@@ -50,17 +46,17 @@ userSchema.statics.signup = async function(email, password){
     }
     const salt = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(password, salt)
-    const user = await this.create({email, password: hash})
+    const user = await this.create({firstname, lastname, email, password: hash, address, role})
 
     return user
 }
 // static signin method 
-userSchema.static.signin = async function(email, password){
+userSchema.statics.signin = async function(email, password){
     if(!email || !password){
         throw Error('All fields must be filled')
-    }
+    }    
 
-    const exist = await this.findOne({email})
+    const user = await this.findOne({email})
 
     if(!user){
         throw Error('incorect email')

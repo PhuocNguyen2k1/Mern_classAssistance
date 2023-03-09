@@ -4,8 +4,6 @@ const User = require('../Models/userModel')
 
 const requireAuth = async (req, res, next) =>{
 
-
-    //verify authentication
     const {authorization} = req.headers
 
     if(!authorization){
