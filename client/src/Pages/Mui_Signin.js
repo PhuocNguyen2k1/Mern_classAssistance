@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {useState} from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -18,14 +18,17 @@ import {useLogin} from '../hooks/useLogin'
 const theme = createTheme();
 
 export default function SignInSide() {
-  const [email, setEmail] = React.useState('')
-  const [password, setPassword] = React.useState('')
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
   const {login, isloading, error} = useLogin()
   
   const handleSubmit = async (e) => {
+    
     e.preventDefault();
-    // const data = new FormData(e.currentTarget);
-    console.log(email, password);
+    await login(
+      email, 
+      password
+      )
   };
 
   return (
@@ -70,10 +73,9 @@ export default function SignInSide() {
                 id="email"
                 label="Email Address"
                 name="email"
-                autoComplete="email"
+                onChange={(e)=>setEmail(e.target.value)}
                 autoFocus
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
               />
               <TextField
                 margin="normal"
@@ -83,9 +85,9 @@ export default function SignInSide() {
                 label="Password"
                 type="password"
                 id="password"
-                autoComplete="current-password"
+                onChange={(e)=>setPassword(e.target.value)}
+                // autoComplete="current-password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
@@ -98,7 +100,7 @@ export default function SignInSide() {
                 disabled={isloading}
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                Log In
               </Button>
               {error && <div className='error'>{error}</div>}
               <Grid container>
@@ -108,7 +110,7 @@ export default function SignInSide() {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link component={RouterLink} to="/SignUp"variant="body2">
+                  <Link component={RouterLink} to="/Signup"variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>
